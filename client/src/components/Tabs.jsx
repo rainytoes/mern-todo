@@ -1,24 +1,34 @@
 
 import { TABS } from "../redux/actions/type";
+import { ListTodo, CheckCircle, Clock } from 'lucide-react';
 
-import { useDispatch } from 'react-redux';
-
-import { toggleTab } from "../redux/actions";
-
-
-const Tabs = ({ currentTab }) => {
-
-    const dispatch = useDispatch();
+const Tabs = ({ currentTab, onTabChange }) => {
+    const getTabIcon = (tab) => {
+        switch (tab) {
+            case 'All Todos':
+                return <ListTodo size={16} />;
+            case 'Active Todos':
+                return <Clock size={16} />;
+            case 'Done Todos':
+                return <CheckCircle size={16} />;
+            default:
+                return null;
+        }
+    };
 
     return (
-        TABS.map(tab => (
-            <button
-                className={tab === currentTab ? 'button selected' : 'button'}
-                onClick={() => dispatch(toggleTab(tab))}
-            >
-                {tab}
-            </button>
-        ))
+        <div className="tabs-container">
+            {TABS.map(tab => (
+                <button
+                    key={tab}
+                    className={tab === currentTab ? 'tab-button selected' : 'tab-button'}
+                    onClick={() => onTabChange(tab)}
+                >
+                    {getTabIcon(tab)}
+                    {tab}
+                </button>
+            ))}
+        </div>
     )
 }
 
